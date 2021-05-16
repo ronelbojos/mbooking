@@ -42,7 +42,7 @@ class BookingTest extends TestCase
         ]);
 
         $booking = Booking::find(1);
-        $this->assertEquals(1, $booking->id);
+        self::assertEquals(1, $booking->id);
     }
 
     /** @test */
@@ -61,6 +61,23 @@ class BookingTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('room_id');
+    }
+    /** @test */
+    public function a_user_is_required()
+    {
+        $this->seed([
+            'UserSeeder',
+            'RoomSeeder',
+        ]);
+
+        $response = $this->post('api/bookings', [
+            'user_id' => '',
+            'room_id' => '1',
+            'date_start' => '2021-06-01 08:00:00',
+            'date_end' => '2021-06-01 17:00:00',
+        ]);
+
+        $response->assertSessionHasErrors('user_id');
     }
 
 }
