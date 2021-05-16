@@ -29,6 +29,7 @@ class BookingController extends Controller
             'user_id' => 'required',
             'room_id' => 'required',
             'date_start' => 'required',
+            'date_end' => 'required',
         ]);
 
         $booking = Booking::create($data);
