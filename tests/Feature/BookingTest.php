@@ -80,4 +80,22 @@ class BookingTest extends TestCase
         $response->assertSessionHasErrors('user_id');
     }
 
+    /** @test */
+    public function a_date_start_is_required()
+    {
+        $this->seed([
+            'UserSeeder',
+            'RoomSeeder',
+        ]);
+
+        $response = $this->post('api/bookings', [
+            'user_id' => '1',
+            'room_id' => '1',
+            'date_start' => '',
+            'date_end' => '2021-06-01 17:00:00',
+        ]);
+
+        $response->assertSessionHasErrors('date_start');
+    }
+
 }

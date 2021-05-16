@@ -28,6 +28,7 @@ class BookingController extends Controller
         $data = request()->validate([
             'user_id' => 'required',
             'room_id' => 'required',
+            'date_start' => 'required',
         ]);
 
         $booking = Booking::create($data);
