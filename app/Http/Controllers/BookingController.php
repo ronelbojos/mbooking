@@ -25,16 +25,9 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        $data = request()->validate([
-            'user_id' => 'required',
-            'room_id' => 'required',
-            'date_start' => 'required',
-            'date_end' => 'required',
-        ]);
+        $booking = Booking::create($this->validatedRequest());
 
-        $booking = Booking::create($data);
-
-        return $booking->id;
+        return response()->json($booking, 201);
     }
 
 
@@ -53,14 +46,16 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Booking $booking)
     {
-        //
+        $booking->update($this->validatedRequest());
+
+        return response()->json($booking, 200);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -71,5 +66,20 @@ class BookingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Validate request data
+     *
+     * @return array
+     */
+    protected function validatedRequest()
+    {
+        return request()->validate([
+            'user_id' => 'required',
+            'room_id' => 'required',
+            'date_start' => 'required',
+            'date_end' => 'required',
+        ]);
     }
 }

@@ -47,7 +47,32 @@ class BookingTest extends TestCase
         self::assertInstanceOf(Carbon::class, $booking->date_start);
         self::assertInstanceOf(Carbon::class, $booking->date_end);
         self::assertEquals('2021-06-01 08:00:00', $booking->date_start->format('Y-m-d H:i:s'));
-        self::assertEquals('2021-06-01 17:00:00', $booking->date_endB->format('Y-m-d H:i:s'));
+        self::assertEquals('2021-06-01 17:00:00', $booking->date_end->format('Y-m-d H:i:s'));
+    }
+
+    /** @test */
+    public function a_booking_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->seed([
+            'UserSeeder',
+            'RoomSeeder',
+            'BookingSeeder',
+        ]);
+
+        $booking = Booking::first();
+
+        $this->patch('api/bookings/' . $booking->id, [
+            'user_id' => 1,
+            'room_id' => 1,
+            'date_start' => '2021-06-02 08:00:00',
+            'date_end' => '2021-06-02 17:00:00',
+        ]);
+
+        self::assertInstanceOf(Carbon::class, $booking->date_start);
+        self::assertEquals('2021-06-02 08:00:00', Booking::first()->date_start->format('Y-m-d H:i:s'));
+        self::assertEquals('2021-06-02 17:00:00', Booking::first()->date_end->format('Y-m-d H:i:s'));
     }
 
     /** @test */
