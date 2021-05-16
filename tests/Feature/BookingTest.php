@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\Booking;
 
@@ -73,6 +74,26 @@ class BookingTest extends TestCase
         self::assertInstanceOf(Carbon::class, $booking->date_start);
         self::assertEquals('2021-06-02 08:00:00', Booking::first()->date_start->format('Y-m-d H:i:s'));
         self::assertEquals('2021-06-02 17:00:00', Booking::first()->date_end->format('Y-m-d H:i:s'));
+    }
+
+    /** @test */
+    public function a_booking_can_be_deleted()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->seed([
+            'UserSeeder',
+            'RoomSeeder',
+            'BookingSeeder',
+        ]);
+
+        $booking = Booking::first();
+
+        self::assertEquals(1, Booking::all()->count());
+
+        $this->delete('api/bookings/' . $booking->id);
+
+        self::assertEquals(0, Booking::all()->count());
     }
 
     /** @test */

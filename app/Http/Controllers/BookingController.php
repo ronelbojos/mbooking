@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use function response;
 
 class BookingController extends Controller
 {
@@ -46,7 +47,9 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @param Booking $booking
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Booking $booking)
     {
@@ -60,12 +63,15 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Booking $booking
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Booking $booking)
     {
-        //
+       $booking->delete();
+
+       return response()->json(null, 204);
     }
 
     /**
