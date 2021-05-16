@@ -45,4 +45,22 @@ class BookingTest extends TestCase
         $this->assertEquals(1, $booking->id);
     }
 
+    /** @test */
+    public function a_room_is_required()
+    {
+        $this->seed([
+            'UserSeeder',
+            'RoomSeeder',
+        ]);
+
+        $response = $this->post('api/bookings', [
+            'user_id' => 1,
+            'room_id' => '',
+            'date_start' => '2021-06-01 08:00:00',
+            'date_end' => '2021-06-01 17:00:00',
+        ]);
+
+        $response->assertSessionHasErrors('room_id');
+    }
+
 }
