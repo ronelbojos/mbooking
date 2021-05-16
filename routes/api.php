@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('bookings', [BookingController::class, 'index']);
+Route::post('bookings', [BookingController::class, 'store']);
 

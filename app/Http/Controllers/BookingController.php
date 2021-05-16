@@ -25,7 +25,13 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $booking = Booking::create([
+            'user_id' => request('user_id'),
+            'room_id' => request('room_id'),
+            'date_start' => request('date_start'),
+            'date_end' => request('date_end'),
+        ]);
+        return $booking->id;
     }
 
 
