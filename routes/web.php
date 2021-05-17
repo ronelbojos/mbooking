@@ -15,7 +15,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
 });
 
 Route::get('rooms', [RoomController::class, 'index']);
@@ -23,3 +23,7 @@ Route::post('rooms', [RoomController::class, 'store']);
 Route::get('users', [UserController::class, 'index']);
 Route::post('users', [UserController::class, 'store']);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
