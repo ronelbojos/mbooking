@@ -47,6 +47,22 @@
                     </tr>
                 </tbody>
             </table>
+            <nav aria-label="Booking Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" v-bind:class="{ disabled: isFirstPage }">
+                        <a class="page-link" v-bind:href="pagination.links.first">First</a>
+                    </li>
+                    <li class="page-item" v-bind:class="{ disabled: isPrevPage }">
+                        <a class="page-link" v-bind:href="pagination.links.prev">Previous</a>
+                    </li>
+                    <li class="page-item" v-bind:class="{ disabled: isNextPage }">
+                        <a class="page-link" v-bind:href="pagination.links.next">Next</a>
+                    </li>
+                    <li class="page-item" v-bind:class="{ disabled: isLastPage }">
+                        <a class="page-link" v-bind:href="pagination.links.last">Last</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </template>
@@ -56,27 +72,41 @@ export default {
     data() {
         return {
             bookings: [],
+            pagination: {
+                links: {},
+            },
             formData: {
                 email: '',
                 password: '',
-            }
+            },
+            isPrevPage: false,
+            isFirstPage: false,
+            isLastPage: false,
+            isNextPage: false,
         }
+    },
+    mounted() {
+        this.getBookings();
     },
     methods: {
         handleLogin() {
             // send axios request to login route
-            axios.get('/sanctum/csrf-cookie').then(response => {
-                axios.post('/login', this.formData).then(response => {
+            axios.get('/sanctum/csrf-cookie').then(() => {
+                axios.post('/login', this.formData).then((response) => {
                     this.getBookings()
                 });
             });
         },
-        getBookings() {
-            axios.get('/api/bookings').then(response => {
-                //console.log(response.data);
-                this.bookings = response.data.data;
-                console.log(this.bookings);
-                console.log(this.bookings.length);
+        getBookings(page = 1) {
+            axios.get('api/bookings?page=' + page)
+                .then(response => {
+                    this.bookings = response.data.data;
+                    console.log(this.bookings);
+                    this.pagination.links = response.data.links;
+                    this.isPrevPage = this.pagination.links.prev === null;
+                    this.isFirstPage = this.pagination.links.first === null;
+                    this.isLastPage = this.pagination.links.last === null;
+                    this.isNextPage = this.pagination.links.next === null;
             });
         }
     }

@@ -16,7 +16,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return BookingResource::collection(Booking::paginate(15));
+        return BookingResource::collection(Booking::paginate(4));
     }
 
     /**
