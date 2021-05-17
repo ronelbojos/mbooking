@@ -26,4 +26,14 @@ class Booking extends Model
     {
         $this->attributes['date_end'] = Carbon::parse($dateEnd);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 }
