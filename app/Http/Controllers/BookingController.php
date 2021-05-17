@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use function response;
@@ -15,7 +16,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return Booking::all();
+        return BookingResource::collection(Booking::all());
     }
 
     /**
